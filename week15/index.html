@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Picker ITF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #ff69b4;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+        }
+
+        .container {
+            background-color: #1a1a1a;
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
+        }
+
+        .food-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #ff69b4;
+            margin-bottom: 20px;
+        }
+
+        .food-name {
+            font-size: 28px;
+            color: #ff69b4;
+            margin: 10px 0;
+        }
+
+        .food-desc {
+            font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .food-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #ff3366;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .random-btn {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+        }
+
+        .random-btn:hover {
+            background-color: #ff3366;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        FOODPICKER
+    </div>
+
+    <div class="container">
+        <img id="f-img" class="food-image" src="https://cdn.discordapp.com/attachments/772106036508098570/1565020281079074898/images.png?ex=6ae36237&is=6ae210b7&hm=8a1b1434d777389f4f7b4eef3b5143953a700b4dffe4059dcbebcb8008d7df61&" alt="Food Image">
+        <h2 id="f-name" class="food-name">กดปุ่มเพื่อสุ่มอาหาร</h2>
+        <p id="f-desc" class="food-desc">วันนี้กินอะไรดีนะ?</p>
+        <div id="f-price" class="food-price">0 ฿</div>
+        <br>
+        <button class="random-btn" onclick="randomFood()">สุ่มเมนูอาหาร</button>
+    </div>
+
+    <script>
+        const foods = [
+            {
+                name: "ข้าวมันไก่",
+                desc: "เนื้อไก่นุ่มๆ ข้าวมันหอมกรุ่น พร้อมน้ำจิ้มรสเด็ด",
+                price: "50 ฿",
+                img: "https://cdn.discordapp.com/attachments/772106036508098570/1565018554720456764/images.png?ex=6ae3609c&is=6ae20f1c&hm=f5949585a258b64d65662327dc5424d3c44d82c62f07a4ae83c7218ecc9e7009&"
+            },
+            {
+                name: "ผัดกะเพราหมูสับไข่ดาว",
+                desc: "เมนูสิ้นคิดแต่อร่อย รสชาติจัดจ้าน หอมกลิ่นใบกะเพรา",
+                price: "60 ฿",
+                img: "https://cdn.discordapp.com/attachments/772106036508098570/1565019078198951956/images.png?ex=6ae36118&is=6ae20f98&hm=15c6ec5c6691ad9fd99affa50d765c607855e12495851088efe3f22915a7a6f6&"
+            },
+            {
+                name: "ต้มยำกุ้งน้ำข้น",
+                desc: "รสชาติเปรี้ยวเผ็ดจัดจ้าน กุ้งตัวโต หอมเครื่องต้มยำ",
+                price: "120 ฿",
+                img: "https://cdn.discordapp.com/attachments/772106036508098570/1565019627648716960/ccbd81b9-6686-4f3c-9e4c-66c749a36626.png?ex=6ae3619b&is=6ae2101b&hm=94b165bf2fa521f519b278960988534c4d201f0271ba08783af53542b51e5af9&"
+            },
+            {
+                name: "ข้าวผัดหมู",
+                desc: "ข้าวผัดร่วนๆ หอมกลิ่นกระทะ บีบมะนาวนิดหน่อยอร่อยมาก",
+                price: "55 ฿",
+                img: "https://cdn.discordapp.com/attachments/772106036508098570/1565019865167954071/images.png?ex=6ae361d4&is=6ae21054&hm=10cdc11ef3692119723c4f9f6ce8e79201ce01bbaaf5b6f98026cec508173cd8&"
+            },
+            {
+                name: "ส้มตำไทย",
+                desc: "เปรี้ยว หวาน เค็ม เผ็ด ครบรส มะละกอกรอบอร่อย",
+                price: "45 ฿",
+                img: "https://cdn.discordapp.com/attachments/772106036508098570/1565020071938621520/images.png?ex=6ae36205&is=6ae21085&hm=6dc5e844d5fb7862c119c8fa5ac7e3aa86cfac860617dfa279adf105275d81fa&"
+            }
+        ];
+
+        function randomFood() {
+            const randomIndex = Math.floor(Math.random() * foods.length);
+            const selectedFood = foods[randomIndex];
+
+            document.getElementById("f-img").src = selectedFood.img;
+            document.getElementById("f-name").innerText = selectedFood.name;
+            document.getElementById("f-desc").innerText = selectedFood.desc;
+            document.getElementById("f-price").innerText = selectedFood.price;
+        }
+    </script>
+</body>
+</html>
